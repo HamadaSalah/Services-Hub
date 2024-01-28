@@ -6,6 +6,8 @@ use App\Services\UploadService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -22,14 +24,30 @@ class Employee extends Authenticatable
      |--------------------------------------------------------------------------
     */
 
+    /**
+     * @return BelongsTo
+     */
     public function job() {
 
         return $this->belongsTo(Job::class);
 
     }
+
+    /**
+     * @return HasMany
+     */
     public function portfolio() {
 
-        return $this->hasMany(Portfolio::class);
+        return $this->hasMany(Portfolio::class)->latest()->take(8);
+
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function rates() {
+
+        return $this->hasMany(Rate::class)->latest()->take(8);
 
     }
 

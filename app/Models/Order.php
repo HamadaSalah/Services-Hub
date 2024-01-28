@@ -6,11 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Rate extends Model
+class Order extends Model
 {
     use HasFactory;
-
-    protected $fillable = ["stars","comment","user_id","employee_id"];
+    protected $fillable = ['date', 'time', 'status', 'user_id', 'employee_id'];
 
     /*
      |--------------------------------------------------------------------------

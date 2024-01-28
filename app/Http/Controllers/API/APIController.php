@@ -74,11 +74,23 @@ class APIController extends Controller
     public function employee(Employee $employee)
     {
 
-        $employee->load(['job']);
+        $employee->load(['job', 'portfolio', 'rates']);
 
         return response()->json([
             'data' => $employee
         ]);
+    }
+
+    public function addRate(Request $request, Employee $employee) {
+
+        $employee->rate()->create([
+            'user_id' => auth()->user()->id,
+            'comment' => $request->comment,
+            'stars' => $request->stars,
+        ]);
+
+        return response()->json(['message' => 'Rate Added Succesfully']);
+
     }
 
     public function updateProfile(UpdateEmployeeRequest $request)

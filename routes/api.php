@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth:users']], function() {
     Route::get('categories', [APIController::class, 'listCategories']);
     Route::get('slider', [APIController::class, 'listSliders']);
     Route::get('employees/{employee}', [APIController::class, 'employee']);
+    Route::get('add-rate/{employee}', [APIController::class, 'addRate']);
 });
 
 Route::group(['middleware' => ['auth:employees'], 'prefix' => 'employee' ], function() {
