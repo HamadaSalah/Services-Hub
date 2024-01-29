@@ -21,14 +21,14 @@ class Rate extends Model
     /**
      * @return BelongsTo
      */
-    public function employee() {
+    public function employee(): belongsTo {
         return $this->belongsTo(Employee::class);
     }
 
     /**
      * @return BelongsTo
      */
-    public function user() {
+    public function user() : belongsTo{
         return $this->belongsTo(User::class);
     }
 

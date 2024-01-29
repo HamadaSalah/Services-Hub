@@ -20,14 +20,16 @@ class Order extends Model
     /**
      * @return BelongsTo
      */
-    public function employee() {
+    public function employee(): BelongsTo
+    {
         return $this->belongsTo(Employee::class);
     }
 
     /**
      * @return BelongsTo
      */
-    public function user() {
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 

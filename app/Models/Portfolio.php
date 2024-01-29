@@ -6,6 +6,7 @@ use App\Services\UploadService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Portfolio extends Model
 {
@@ -17,7 +18,10 @@ class Portfolio extends Model
      | Set Relations
      |--------------------------------------------------------------------------
     */
-    public function employee() {
+    /**
+     * @return BelongsTo
+     */
+    public function employee(): belongsTo {
 
         return $this->belongsTo(Employee::class);
 

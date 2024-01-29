@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddPortfolioEmployeeRequest;
+use App\Http\Requests\AppointmentRequest;
+use App\Http\Requests\RateRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Calender;
 use App\Models\Employee;
@@ -81,7 +83,7 @@ class APIController extends Controller
         ]);
     }
 
-    public function addRate(Request $request, Employee $employee) {
+    public function addRate(RateRequest $request, Employee $employee) {
 
         $employee->rate()->create([
             'user_id' => auth()->user()->id,
@@ -91,6 +93,18 @@ class APIController extends Controller
 
         return response()->json(['message' => 'Rate Added Succesfully']);
 
+    }
+
+    /**
+     * @param AppointmentRequest $request
+     * @param Employee $employee
+     * @return JsonResponse
+     */
+    public function AddAppointment(AppointmentRequest $request, Employee $employee) {
+        $requestData = $request->validated();
+        $requestData['user_id'] = auth()->user()->id;
+        $data = $employee->orders()->create($requestData);
+        return response()->json(['message' => 'appointment created successfully', 'data' => $data ]);
     }
 
     public function updateProfile(UpdateEmployeeRequest $request)

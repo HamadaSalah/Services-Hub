@@ -15,7 +15,7 @@ use App\Http\Controllers\API\AuthController;
 |
 */
 
-//Registeration for
+//Registration for
 Route::post('/auth/register', [AuthController::class, 'userRegister']);
 Route::post('employee/auth/register', [AuthController::class, 'employeeRegister']);
 
@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth:users']], function() {
     Route::get('slider', [APIController::class, 'listSliders']);
     Route::get('employees/{employee}', [APIController::class, 'employee']);
     Route::get('add-rate/{employee}', [APIController::class, 'addRate']);
+    Route::post('add-appointment/{employee}', [APIController::class, 'AddAppointment']);
 });
 
 Route::group(['middleware' => ['auth:employees'], 'prefix' => 'employee' ], function() {
