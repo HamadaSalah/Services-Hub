@@ -75,7 +75,8 @@ class UploadService
      */
     public static function url(?string $path = null): ?string
     {
-        return $path && Storage::exists($path) ? Storage::url($path) : null;
+        return Storage::url($path);
+        // return $path && Storage::exists($path) ? Storage::url($path) : null;
     }
 
     /**

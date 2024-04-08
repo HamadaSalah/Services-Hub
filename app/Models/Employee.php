@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Services\UploadService;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,6 +12,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @method order()
+ */
 class Employee extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -27,28 +30,32 @@ class Employee extends Authenticatable
     /**
      * @return BelongsTo
      */
-    public function job() {
-
+    public function job(): belongsTo {
         return $this->belongsTo(Job::class);
-
     }
 
     /**
      * @return HasMany
      */
-    public function portfolio() {
-
+    public function portfolio(): HasMany
+    {
         return $this->hasMany(Portfolio::class)->latest()->take(8);
-
     }
 
     /**
      * @return HasMany
      */
-    public function rates() {
-
+    public function rates(): hasMany
+    {
         return $this->hasMany(Rate::class)->latest()->take(8);
+    }
 
+    /**
+     * @return HasMany
+     */
+    public function orders(): hasMany
+    {
+        return $this->hasMany(Order::class)->latest();
     }
 
     /*
