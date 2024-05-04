@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Models\Calender;
 use App\Models\Order;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -20,7 +21,7 @@ class UniqueDateTime implements Rule
     public function passes($attribute, $value)
     {
         // Check if the combination of date and time is unique in the specified model
-        return !Order::where('date', $this->date)->where('time', $this->time)
+        return !Calender::where('date', $this->date)->where('time', $this->time)
             ->exists();
     }
 

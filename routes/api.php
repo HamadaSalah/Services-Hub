@@ -40,5 +40,7 @@ Route::group(['middleware' => ['auth:employees'], 'prefix' => 'employee' ], func
     Route::post('add-portfolio', [APIController::class, 'addPortfolio']);
     Route::get('calenders', [APIController::class, 'calenders']);
     Route::get('calenders/{calender}', [APIController::class, 'getCalenders']);
+    Route::get('accept-appointment/{id}', [APIController::class, 'acceptAppointment']);
+    Route::get('refuse-appointment/{id}', [APIController::class, 'refuseAppointment']);
 });
 

@@ -79,7 +79,7 @@ class APIController extends Controller
     public function employee(Employee $employee)
     {
 
-        $employee->load(['job', 'portfolio', 'rates']);
+        $employee->load(['job', 'portfolio']); 
 
         return response()->json([
             'data' => $employee
@@ -104,10 +104,15 @@ class APIController extends Controller
      * @return JsonResponse
      */
     public function AddAppointment(AppointmentRequest $request, Employee $employee) {
+
         $requestData = $request->validated();
+
         $requestData['user_id'] = auth()->user()->id;
+
         $data = $employee->orders()->create($requestData);
+
         return response()->json(['message' => 'appointment created successfully', 'data' => $data ]);
+
     }
 
     public function updateProfile(UpdateEmployeeRequest $request)
@@ -150,10 +155,10 @@ class APIController extends Controller
     {
         $employee = auth()->user();
 
-        $calnder = Calender::where('employee_id', $employee->id)->latest()->paginate(10);
+        $calender = Calender::where('employee_id', $employee->id)->latest()->paginate(10);
 
         return response()->json([
-            'data' => $calnder
+            'data' => $calender
         ]);
 
     }
@@ -199,5 +204,26 @@ class APIController extends Controller
          $rents = Rent::where('user_id', auth()->user()->id)->where('created_at', '<', $firstDayOfCurrentMonth)->get();
 
         return response()->json($rents, 200);
+    }
+
+    public function acceptAppointment($id) {
+
+        $calender = Calender::findOrFail($id);
+
+        $calender->update([
+            'status' => 2
+        ]);
+        return response()->json(['message' => 'Accepted Successfully'], 200);
+    }
+    public function refuseAppointment($id) {
+
+        $calender = Calender::findOrFail($id);
+
+        $calender->update([
+            'status' => 3
+        ]);
+
+        return response()->json(['message' => 'Refused Successfully'], 200);
+
     }
 }

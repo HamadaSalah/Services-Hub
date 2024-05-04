@@ -55,7 +55,7 @@ class Employee extends Authenticatable
      */
     public function orders(): hasMany
     {
-        return $this->hasMany(Order::class)->latest();
+        return $this->hasMany(Calender::class)->latest();
     }
 
     /*
