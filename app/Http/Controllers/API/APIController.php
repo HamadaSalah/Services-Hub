@@ -11,6 +11,8 @@ use App\Models\Calender;
 use App\Models\Car;
 use App\Models\Employee;
 use App\Models\Job;
+use App\Models\Notification;
+use App\Models\Rate;
 use App\Models\Rent;
 use App\Models\Setting;
 use App\Models\Slider;
@@ -37,9 +39,18 @@ class APIController extends Controller
     /**
      * @return JsonResponse
      */
-    public function listEmployees(){
+    public function listEmployees(Request $request){
 
-        $employees = Employee::with('job')->select(['id', 'job_id','name', 'photo', 'description'])->latest()->take(6)->get();
+        $employees = Employee::with(['job', 'prevWorks'])->select(['id', 'job_id','name', 'photo', 'description'])->latest();
+
+        if($request->name) {
+            $employees = $employees->where('name', 'LIKE', '%'. $request->name . '%');
+        }
+        if($request->job_id) {
+            $employees = $employees->where('job_id', 'LIKE', '%'. $request->job_id . '%');
+        }
+        
+        $employees = $employees->paginate(10);
 
         return response()->json([
             'data' => $employees
@@ -79,19 +90,20 @@ class APIController extends Controller
     public function employee(Employee $employee)
     {
 
-        $employee->load(['job', 'portfolio']); 
+        $employee->load(['job', 'portfolio', 'prevWorks.rates']); 
 
         return response()->json([
             'data' => $employee
         ]);
     }
 
-    public function addRate(RateRequest $request, Employee $employee) {
+    public function addRate(RateRequest $request) {
 
-        $employee->rate()->create([
+       Rate::create([
             'user_id' => auth()->user()->id,
             'comment' => $request->comment,
             'stars' => $request->stars,
+            'calender_id' => $request->calender_id
         ]);
 
         return response()->json(['message' => 'Rate Added Succesfully']);
@@ -111,6 +123,11 @@ class APIController extends Controller
 
         $data = $employee->orders()->create($requestData);
 
+        Notification::create([
+            'employee_id' => $employee->id,
+            'calender_id' => $data->id,
+            'text' => 'تم طلبك من'  . auth()->user()->name .  ' علي موعد بتاريخ ' . $request->date . ' الساعة ' . $request->time
+        ]);
         return response()->json(['message' => 'appointment created successfully', 'data' => $data ]);
 
     }
@@ -144,13 +161,15 @@ class APIController extends Controller
     {
         $employee = auth()->user();
 
-        $calnder = Calender::where('employee_id', $employee->id)->latest()->paginate(10);
+        $calnder = Calender::with(['rates', 'user'])->where('employee_id', $employee->id)->latest()->paginate(10);
 
         return response()->json([
             'data' => $calnder
         ]);
 
     }
+
+
     public function getCalenders()
     {
         $employee = auth()->user();
@@ -199,11 +218,13 @@ class APIController extends Controller
     }
     
     public function lastRent() {
+
         $firstDayOfCurrentMonth = Carbon::now()->startOfMonth();
 
-         $rents = Rent::where('user_id', auth()->user()->id)->where('created_at', '<', $firstDayOfCurrentMonth)->get();
+        $rents = Rent::where('user_id', auth()->user()->id)->where('created_at', '<', $firstDayOfCurrentMonth)->get();
 
         return response()->json($rents, 200);
+
     }
 
     public function acceptAppointment($id) {
@@ -213,6 +234,13 @@ class APIController extends Controller
         $calender->update([
             'status' => 2
         ]);
+
+        Notification::create([
+            'user_id' => $calender->user_id,
+            'calender_id' => $calender->id,
+            'text' => ' تم القبول علي موعد بتاريخ' . $calender->date . ' الساعة ' . $calender->time
+        ]);
+
         return response()->json(['message' => 'Accepted Successfully'], 200);
     }
     public function refuseAppointment($id) {
@@ -225,5 +253,18 @@ class APIController extends Controller
 
         return response()->json(['message' => 'Refused Successfully'], 200);
 
+    }
+
+    public function notificationEmployee() {
+
+        $noty = Notification::where('employee_id', auth()->user()->id)->paginate(10);
+
+        return response()->json(['data' => $noty], 200);
+    }
+    public function notificationUser() {
+
+        $noty = Notification::where('user_id', auth()->user()->id)->paginate(10);
+
+        return response()->json(['data' => $noty], 200);
     }
 }

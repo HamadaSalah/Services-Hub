@@ -21,7 +21,8 @@ class RateRequest extends FormRequest
     {
         return [
             'comment' => 'required',
-            'stars' => 'required',
+            'calender_id' => 'required|exists:calenders,id',
+            'stars' => 'required|integer|min:0|max:5',
         ];
     }
 }

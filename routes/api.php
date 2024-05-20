@@ -20,7 +20,6 @@ Route::post('/auth/register', [AuthController::class, 'userRegister']);
 Route::post('employee/auth/register', [AuthController::class, 'employeeRegister']);
 
 Route::group(['middleware' => ['auth:users']], function() {
-
     Route::get('/cars', [APIController::class, 'getCars']);
     Route::post('/rent', [APIController::class, 'rent']);
     Route::get('/current-rent', [APIController::class, 'currentRent']);
@@ -31,8 +30,9 @@ Route::group(['middleware' => ['auth:users']], function() {
     Route::get('categories', [APIController::class, 'listCategories']);
     Route::get('slider', [APIController::class, 'listSliders']);
     Route::get('employees/{employee}', [APIController::class, 'employee']);
-    Route::get('add-rate/{employee}', [APIController::class, 'addRate']);
+    Route::post('add-rate', [APIController::class, 'addRate']);
     Route::post('add-appointment/{employee}', [APIController::class, 'AddAppointment']);
+    Route::get('notification/user', [APIController::class, 'notificationUser']);
 });
 
 Route::group(['middleware' => ['auth:employees'], 'prefix' => 'employee' ], function() {
@@ -42,5 +42,7 @@ Route::group(['middleware' => ['auth:employees'], 'prefix' => 'employee' ], func
     Route::get('calenders/{calender}', [APIController::class, 'getCalenders']);
     Route::get('accept-appointment/{id}', [APIController::class, 'acceptAppointment']);
     Route::get('refuse-appointment/{id}', [APIController::class, 'refuseAppointment']);
+    Route::get('notification', [APIController::class, 'notificationEmployee']);
+
 });
 
