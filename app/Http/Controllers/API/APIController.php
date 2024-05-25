@@ -217,6 +217,19 @@ class APIController extends Controller
         return response()->json($rents, 200);
     }
     
+
+    public function PrevWorks() {
+
+        $user = auth()->user();
+
+        $calnder = Calender::with(['rates', 'user'])->where('user_id', $user->id)->latest()->paginate(10);
+
+        return response()->json([
+            'data' => $calnder
+        ]);
+    }
+
+
     public function lastRent() {
 
         $firstDayOfCurrentMonth = Carbon::now()->startOfMonth();

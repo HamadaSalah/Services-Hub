@@ -20,10 +20,11 @@ Route::post('/auth/register', [AuthController::class, 'userRegister']);
 Route::post('employee/auth/register', [AuthController::class, 'employeeRegister']);
 
 Route::group(['middleware' => ['auth:users']], function() {
+
     Route::get('/cars', [APIController::class, 'getCars']);
     Route::post('/rent', [APIController::class, 'rent']);
     Route::get('/current-rent', [APIController::class, 'currentRent']);
-    Route::get('/last-rent', [APIController::class, 'lastRent']);
+    Route::get('/prev-works', [APIController::class, 'PrevWorks']);
 
     Route::get('intro', [APIController::class, 'intro']);
     Route::get('employees', [APIController::class, 'listEmployees']);
