@@ -65,6 +65,14 @@ class Employee extends Authenticatable
         return $this->hasMany(Calender::class)->where('status', 2)->latest();
     }
 
+    /**
+     * @return HasMany
+     */
+    public function prevWorks(): hasMany
+    {
+        return $this->hasMany(Calender::class)->where('status', 2)->latest();
+    }
+
     /*
      |--------------------------------------------------------------------------
      | Set Custom Attributes
