@@ -19,7 +19,9 @@ class Employee extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = ['name','phone','email','country','city','description','password','card_id','licence','photo','intro_video','lat','lng', 'job_id'];
+    protected $fillable = ['name','phone','email','country','city',
+    'description','password','card_id','licence','photo','intro_video','lat','lng', 'job_id',
+    'firebase_token'];
 
     /*
      |--------------------------------------------------------------------------

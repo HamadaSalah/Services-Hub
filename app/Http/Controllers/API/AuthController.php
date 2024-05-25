@@ -56,7 +56,8 @@ class AuthController extends Controller
             }
 
             $user = $model::firstOrCreate([
-                'phone' => $request->phone
+                'phone' => $request->phone],[
+                'firebase_token' => $request->firebase_token ?? ''
             ]);
             $abilities = $model === 'App\Models\User' ? ['guard:users'] : ['guard:employees'];
 
