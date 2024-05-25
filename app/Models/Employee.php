@@ -57,6 +57,13 @@ class Employee extends Authenticatable
     {
         return $this->hasMany(Calender::class)->latest();
     }
+    /**
+     * @return HasMany
+     */
+    public function latestProjects(): hasMany
+    {
+        return $this->hasMany(Calender::class)->where('status', 2)->latest();
+    }
 
     /*
      |--------------------------------------------------------------------------

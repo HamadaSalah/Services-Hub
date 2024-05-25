@@ -79,7 +79,7 @@ class APIController extends Controller
     public function employee(Employee $employee)
     {
 
-        $employee->load(['job', 'portfolio']); 
+        $employee->load(['job', 'portfolio', 'latestProjects']); 
 
         return response()->json([
             'data' => $employee
