@@ -18,13 +18,13 @@ class Portfolio extends Model
      | Set Custom Attributes
      |--------------------------------------------------------------------------
     */
-    public function portfolio(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => !empty($value) ? UploadService::store($value, 'photo') : $this->photo,
-            get: fn($value) => env('APP_URL').UploadService::url($value),
+    // public function portfolio(): Attribute
+    // {
+    //     return Attribute::make(
+    //         set: fn($value) => !empty($value) ? UploadService::store($value, 'photo') : $this->photo,
+    //         get: fn($value) => env('APP_URL').UploadService::url($value),
 
-        );
-    }
+    //     );
+    // }
 
 }

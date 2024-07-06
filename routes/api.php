@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth:users']], function() {
     Route::post('/rent', [APIController::class, 'rent']);
     Route::get('/current-rent', [APIController::class, 'currentRent']);
     Route::get('/prev-works', [APIController::class, 'PrevWorks']);
+    Route::get('profile', [APIController::class, 'profile']);
 
     Route::get('intro', [APIController::class, 'intro']);
     Route::get('employees', [APIController::class, 'listEmployees']);
@@ -34,10 +35,13 @@ Route::group(['middleware' => ['auth:users']], function() {
     Route::post('add-rate', [APIController::class, 'addRate']);
     Route::post('add-appointment/{employee}', [APIController::class, 'AddAppointment']);
     Route::get('notification/user', [APIController::class, 'notificationUser']);
+    Route::post('update-profile', [APIController::class, 'updateProfile']);
+
 });
 
 Route::group(['middleware' => ['auth:employees'], 'prefix' => 'employee' ], function() {
     Route::post('update-profile', [APIController::class, 'updateProfile']);
+    Route::get('profile', [APIController::class, 'profile']);
     Route::post('add-portfolio', [APIController::class, 'addPortfolio']);
     Route::get('calenders', [APIController::class, 'calenders']);
     Route::get('calenders/{calender}', [APIController::class, 'getCalenders']);

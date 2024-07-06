@@ -144,6 +144,20 @@ class APIController extends Controller
         ]);
 
     }
+    public function profile()
+    {
+        $employee = auth()->user();
+
+        $employee = Employee::findOrfail($employee->id);
+
+        $employee->load('portfolio');
+
+        return response()->json([
+            'message' => 'Profile Updated Successfully',
+            'data' => $employee
+        ]);
+
+    }
     public function addPortfolio(AddPortfolioEmployeeRequest $request)
     {
 

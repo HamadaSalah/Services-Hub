@@ -26,6 +26,8 @@ class AppointmentRequest extends FormRequest
         return [
             'date' => ['required', 'date'],
             'time' => ['required', 'date_format:H:i',  new \App\Rules\UniqueDateTime(request()->date, request()->time)],
+            'desc' => 'nullable',
+            'location' => 'nullable'
 
         ];
     }

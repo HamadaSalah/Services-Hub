@@ -13,7 +13,7 @@ class Calender extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'employee_id', 'date','time', 'status'];
+    protected $fillable = ['user_id', 'employee_id', 'date','time', 'status', 'desc', 'location'];
 
     public function date(): Attribute
     {
